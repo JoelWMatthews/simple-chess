@@ -1,0 +1,9 @@
+
+Game/Board.cs.meta
+Game/GameManager.cs.meta
+Unity/DebugComponent.cs.meta
+Game/Piece.cs.meta
+Unity/DrawBoard.cs.meta
+Unity/PieceObject.cs.meta
+Unity/SpritePair.cs.meta
+Unity/TileObject.cs.meta

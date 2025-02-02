@@ -22,31 +22,34 @@ namespace SimpleChess.Game
 
         public static void AddMove(this List<TilePair> pairs, TilePair pair, Board context, Piece piece, bool pruneCheck)
         {
-            Debug.Log($"Checking move: {piece} from {piece.Tile} to {pair}");
+
+            //Debug.Log($"Checking move: {piece} from {piece.Tile} to {pair}");
 
             if (pair.X > 7 || pair.X < 0 || pair.Y > 7 || pair.Y < 0)
             {
-                Debug.Log($"{piece} at {piece.Tile} to {pair}: Move is out of board bounds");
+                //Debug.Log($"{piece} at {piece.Tile} to {pair}: Move is out of board bounds");
                 return;
             }
 
             if (context.IsOccupied(pair) == piece.Color)
             {
-                Debug.Log($"{piece} at {piece.Tile} to {pair}: Move is onto a square occupied by the same color piece");
+                //Debug.Log($"{piece} at {piece.Tile} to {pair}: Move is onto a square occupied by the same color piece");
                 return;
             }
-
-            Board checkBoard = new Board(Board.GetFen());
-            checkBoard.MovePiece(new TilePair(piece.Tile.X, piece.Tile.Y), pair, true);
-            Debug.Log($"{piece} at {piece.Tile} to {pair} board: {checkBoard.GetFen()}");
+            
+            //Debug.Log($"{piece} at {piece.Tile} to {pair} board: {checkBoard.GetFen()}");
 
             if (!pruneCheck)
             {
+                Board checkBoard = new Board(context.GetFen());
+                
+                checkBoard.MovePiece(new TilePair(piece.Tile.X, piece.Tile.Y), pair, true);
+                
                 PieceColor check = checkBoard.IsInCheck();
-                Debug.Log($"Results of IsInCheck for {piece} at {piece.Tile} to {pair}: {check}");
+                //Debug.Log($"Results of IsInCheck for {piece} at {piece.Tile} to {pair}: {check}\n{checkBoard.GetFen()}");
                 if (check == PieceColor.Both || check == piece.Color)
                 {
-                    Debug.Log($"{piece} at {piece.Tile} to {pair}: Move puts the player in check");
+                    //Debug.Log($"{piece} at {piece.Tile} to {pair}: Move puts the player in check");
                     return;
                 }
             }

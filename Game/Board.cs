@@ -10,9 +10,6 @@ namespace SimpleChess.Game
     {
         public Piece[][] Layout;
 
-        private Piece _cachedDestination;
-        private Piece _cachedOriginal;
-
         public Board()
         {
             
@@ -67,37 +64,37 @@ namespace SimpleChess.Game
         public String GetFen()
         {
             StringBuilder fen = new StringBuilder();
-            for (int y = 0; y < 8; y++)
+            for (int y = 7; y >= 0; y--) // Start from rank 8 (y = 7) to rank 1 (y = 0)
             {
                 int emptySquare = 0;
-                for (int x = 0; x < 8; x++)
+                for (int x = 0; x < 8; x++) // File 'a' to file 'h'
                 {
-                    if (Layout[x][y] == null)
+                    if (Layout[x][y] == null) // Empty square
                     {
                         emptySquare++;
                     }
                     else
                     {
-                        char piece = Layout[x][y].GetFen();
                         if (emptySquare > 0)
                         {
                             fen.Append(emptySquare);
                             emptySquare = 0;
                         }
-                        fen.Append(piece);
+                        fen.Append(Layout[x][y].GetFen()); // Append piece FEN notation
                     }
                 }
                 if (emptySquare > 0)
                 {
-                    fen.Append(emptySquare);
+                    fen.Append(emptySquare); // Append remaining empty squares
                 }
-                if (y < 7)
+                if (y > 0)
                 {
-                    fen.Append("/");
+                    fen.Append("/"); // Add rank separator
                 }
             }
             return fen.ToString();
         }
+
         
         public Piece GetPieceFromFen(char fen)
         {
@@ -184,11 +181,11 @@ namespace SimpleChess.Game
                     switch (Layout[move.Target.X][move.Target.Y].Color)
                     {
                         case PieceColor.White:
-                            Debug.Log("White is in Check! (Checked by " + move.Piece + " at " + move.Piece.Tile);
+                            //Debug.Log("White is in Check! (Checked by " + move.Piece + " at " + move.Piece.Tile);
                             whiteCheck = true;
                             break;
                         case PieceColor.Black:
-                            Debug.Log("Black is in Check! (Checked by " + move.Piece + " at " + move.Piece.Tile);
+                            //Debug.Log("Black is in Check! (Checked by " + move.Piece + " at " + move.Piece.Tile);
                             blackCheck = true;
                             break;
                     }
@@ -227,12 +224,12 @@ namespace SimpleChess.Game
         public void MovePiece(TilePair original, TilePair destination, bool force = false)
         {
 
-            if (original.Y == destination.Y && original.X == destination.X)
+            if (IsOccupied(original) == PieceColor.None)
             {
                 return;
             }
-
-            if (IsOccupied(original) == PieceColor.None)
+            
+            if (original.Y == destination.Y && original.X == destination.X)
             {
                 return;
             }
@@ -254,24 +251,16 @@ namespace SimpleChess.Game
                 if (!found) return;
             }
 
-            _cachedOriginal = Layout[original.X][original.Y];
-            _cachedDestination = Layout[destination.X][destination.Y];
-            
             Layout[destination.X][destination.Y] = Layout[original.X][original.Y];
             Layout[original.X][original.Y] = null;
             Layout[destination.X][destination.Y].HasMoved = true;
             Layout[destination.X][destination.Y].Tile = new TilePair(destination.X, destination.Y);
             
-            GameManager.ChangeTurn();
-            
-            if (!force) GameManager.Win = CheckForWin();
-        }
-
-        public void UndoForcedMove(TilePair original, TilePair destination)
-        {
-            Layout[original.X][original.Y] = _cachedOriginal;
-            Layout[destination.X][destination.Y] = _cachedDestination;
-            GameManager.ChangeTurn();
+            if (!force)
+            {
+                GameManager.ChangeTurn();
+                GameManager.Win = CheckForWin();
+            }
         }
 
         public PieceColor CheckForWin()
