@@ -7,7 +7,7 @@ namespace SimpleChess.Unity
 {
     public class PieceObject : MonoBehaviour
     {
-        public Piece Piece;
+        public ChessPiece Piece;
 
         public Image Front;
         public Image Back;
@@ -15,7 +15,7 @@ namespace SimpleChess.Unity
         public List<GameObject> Markers = new List<GameObject>();
         public void OnPickUp()
         {
-            List<TilePair> moves = Piece.GetMoves(GameManager.Board);
+            List<TilePair> moves = Piece.GetMoves(GameManager.Instance.GameBoard);
 
             foreach (var move in moves)
             {

@@ -8,7 +8,7 @@ namespace SimpleChess.Unity
     {
         public void PrintAllMoves()
         {
-            List<Move> moves = GameManager.Board.GetAllPossibleMoves();
+            List<ChessMove> moves = GameManager.Instance.GameBoard.GetAllPossibleMoves();
 
             foreach (var move in moves)
             {
@@ -18,7 +18,7 @@ namespace SimpleChess.Unity
 
         public void PrintAllWhiteMoves()
         {
-            List<Move> moves = GameManager.Board.GetAllPossibleMoves(PieceColor.White, false);
+            List<ChessMove> moves = GameManager.Instance.GameBoard.GetAllPossibleMoves(PieceColor.White, false);
 
             foreach (var move in moves)
             {
@@ -28,7 +28,7 @@ namespace SimpleChess.Unity
         
         public void PrintAllBlackMoves()
         {
-            List<Move> moves = GameManager.Board.GetAllPossibleMoves(PieceColor.Black, false);
+            List<ChessMove> moves = GameManager.Instance.GameBoard.GetAllPossibleMoves(PieceColor.Black, false);
 
             foreach (var move in moves)
             {
@@ -36,9 +36,10 @@ namespace SimpleChess.Unity
             }
         }
 
+
         public void PrintFen()
         {
-            Debug.Log(GameManager.Board.GetFen());
+            Debug.Log(GameManager.Instance.GameBoard.GetFen());
         }
     }
 }

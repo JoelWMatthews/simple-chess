@@ -14,7 +14,7 @@ namespace SimpleChess.Unity
 
         private GameObject _heldPiece;
 
-        public void SetPiece(Piece piece)
+        public void SetPiece(ChessPiece piece)
         {
             _heldPiece = Instantiate(DrawBoard.Piece, transform);
             PieceObject pieceData = _heldPiece.GetComponent<PieceObject>();
@@ -22,7 +22,7 @@ namespace SimpleChess.Unity
             pieceData.Piece.Tile = new TilePair(X, Y);
             pieceData.Draw();
 
-            if (GameManager.PlayerTurn != pieceData.Piece.Color)
+            if (GameManager.Instance.GameBoard.PlayerTurn != pieceData.Piece.Color)
             {
                 _heldPiece.GetComponent<LeanDrag>().enabled = false;
             }

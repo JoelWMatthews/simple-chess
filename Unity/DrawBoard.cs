@@ -54,22 +54,22 @@ namespace SimpleChess.Unity
                 Board[piece.X][piece.Y] = piece;
             }
             
-            GameManager.Initialize();
+            GameManager.Instance.Initialize();
             //GameManager.SetFromString(GameManager.TestingString);
             Draw();
         }
 
         public void StartOver()
         {
-            GameManager.Initialize();
+            GameManager.Instance.Initialize();
             Instance.TurnText.text = "White's Turn!";
             Draw();
         }
 
         public static void MovePiece(TilePair original, TilePair destination)
         {
-            GameManager.Board.MovePiece(original, destination);
-            if (GameManager.PlayerTurn == PieceColor.White)
+            GameManager.Instance.GameBoard.MovePiece(original, destination);
+            if (GameManager.Instance.GameBoard.PlayerTurn == PieceColor.White)
             {
                 Instance.TurnText.text = "White's Turn!";
             }
@@ -78,17 +78,22 @@ namespace SimpleChess.Unity
                 Instance.TurnText.text = "Black's Turn!";
             }
 
-            if (GameManager.Win != PieceColor.None)
+            if (GameManager.Instance.GameBoard.Win != PieceColor.None)
             {
-                if (GameManager.Win == PieceColor.Black)
+                if (GameManager.Instance.GameBoard.Win == PieceColor.Black)
                 {
                     Instance.TurnText.text = "BLACK WINS!!";
                 }
-                else
+                else if (GameManager.Instance.GameBoard.Win == PieceColor.White)
                 {
                     Instance.TurnText.text = "WHITE WINS!!";
                 }
+                else
+                {
+                    Instance.TurnText.text = "DRAW!!";
+                }
             }
+
             Draw();
         }
 
@@ -99,9 +104,9 @@ namespace SimpleChess.Unity
                 for (int y = 0; y < Board[x].Length; y++)
                 {
                     Board[x][y].DeletePiece();
-                    if (!Equals(GameManager.Board.Layout[x][y], null))
+                    if (!Equals(GameManager.Instance.GameBoard.Layout[x][y], null))
                     {
-                        Board[x][y].SetPiece(GameManager.Board.Layout[x][y]);
+                        Board[x][y].SetPiece(GameManager.Instance.GameBoard.Layout[x][y]);
                     }
                 }
             }
