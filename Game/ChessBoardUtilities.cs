@@ -1,5 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
+using UnityEngine;
 
 namespace SimpleChess.Game
 {
@@ -140,6 +143,11 @@ namespace SimpleChess.Game
                     board.PlayerTurn = PieceColor.Black;
                     break;
             }
+
+            if (board.PlayerTurn == board.AIControlled && board.AIControlled != PieceColor.None)
+            {
+                board.GetAIMove();
+            }
         }
 
         public static void ChangeTurn(this ChessBoard board)
@@ -155,6 +163,35 @@ namespace SimpleChess.Game
 
             board.EnPassantTile = board.EnPassantQueue;
             board.EnPassantQueue = null;
+
+            if (board.PlayerTurn == board.AIControlled)
+            {
+                board.GetAIMove();
+            }
+        }
+
+        public static async void GetAIMove(this ChessBoard board)
+        {
+            Debug.Log("Getting AI move");
+            string result = await StockfishCommunicator.Instance.GetBestMove(board.GetFen());
+
+            Debug.Log("Got move! " + result);
+
+            if (result != null)
+            {
+                string[] split = result.Split(' ');
+                Debug.Log(split[1]);
+                TilePair piece = new TilePair(split[1].Substring(0, 2).ToUpper());
+                TilePair target = new TilePair(split[1].Substring(2, 2).ToUpper());
+                Debug.Log(piece + " to " + target);
+
+                board.MovePiece(piece, target);
+            }
+
+            foreach (var listener in board.Listeners)
+            {
+                listener.OnAIMove();
+            }
         }
 
         public static void SetCastlingRules(this ChessBoard board, string castling)

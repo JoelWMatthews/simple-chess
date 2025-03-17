@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SimpleChess.Unity
 {
-    public class DrawBoard : MonoBehaviour
+    public class DrawBoard : ChessBoardListener
     {
         public static DrawBoard Instance;
         
@@ -110,6 +110,37 @@ namespace SimpleChess.Unity
                     }
                 }
             }
+        }
+
+        public override void OnAIMove()
+        {
+            Debug.Log("OnMove");
+            if (GameManager.Instance.GameBoard.PlayerTurn == PieceColor.White)
+            {
+                Instance.TurnText.text = "White's Turn!";
+            }
+            else
+            {
+                Instance.TurnText.text = "Black's Turn!";
+            }
+
+            if (GameManager.Instance.GameBoard.Win != PieceColor.None)
+            {
+                if (GameManager.Instance.GameBoard.Win == PieceColor.Black)
+                {
+                    Instance.TurnText.text = "BLACK WINS!!";
+                }
+                else if (GameManager.Instance.GameBoard.Win == PieceColor.White)
+                {
+                    Instance.TurnText.text = "WHITE WINS!!";
+                }
+                else
+                {
+                    Instance.TurnText.text = "DRAW!!";
+                }
+            }
+
+            Draw();
         }
     }
 }

@@ -46,6 +46,27 @@ namespace SimpleChess.Game
                 ChessBoardUtilities.AddMove(moves, new TilePair(Tile.X, Tile.Y - 1), context, this, pruneCheck);
             }
 
+            // Diagonal moves
+            if (Tile.X < 7 && Tile.Y < 7)
+            {
+                ChessBoardUtilities.AddMove(moves, new TilePair(Tile.X + 1, Tile.Y + 1), context, this, pruneCheck);
+            }
+
+            if (Tile.X > 0 && Tile.Y < 7)
+            {
+                ChessBoardUtilities.AddMove(moves, new TilePair(Tile.X - 1, Tile.Y + 1), context, this, pruneCheck);
+            }
+
+            if (Tile.X < 7 && Tile.Y > 0)
+            {
+                ChessBoardUtilities.AddMove(moves, new TilePair(Tile.X + 1, Tile.Y - 1), context, this, pruneCheck);
+            }
+
+            if (Tile.X > 0 && Tile.Y > 0)
+            {
+                ChessBoardUtilities.AddMove(moves, new TilePair(Tile.X - 1, Tile.Y - 1), context, this, pruneCheck);
+            }
+
             // Castling moves
             if (context.CanCastle(Color, true))
             {

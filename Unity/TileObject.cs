@@ -25,6 +25,11 @@ namespace SimpleChess.Unity
             if (GameManager.Instance.GameBoard.PlayerTurn != pieceData.Piece.Color)
             {
                 _heldPiece.GetComponent<LeanDrag>().enabled = false;
+                return;
+            }
+            if (pieceData.Piece.Color == GameManager.Instance.GameBoard.AIControlled)
+            {
+                _heldPiece.GetComponent<LeanDrag>().enabled = false;
             }
         }
 

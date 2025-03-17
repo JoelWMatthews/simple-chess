@@ -8,7 +8,6 @@ namespace SimpleChess.Game
 {
     public class ChessBoard
     {
-        //public static readonly String StartingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
         public static readonly String StartingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0";
 
         public ChessPiece[][] Layout;
@@ -28,6 +27,10 @@ namespace SimpleChess.Game
         public int FullMoveClock = 0;
 
         public bool PieceWasCaptured = false;
+
+        public PieceColor AIControlled = PieceColor.None;
+
+        public List<ChessBoardListener> Listeners = new List<ChessBoardListener>();
 
         public ChessBoard()
         {
